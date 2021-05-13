@@ -2,6 +2,12 @@
 
 A new Flutter project.
 
+# online tutorial
+
+Learning bloc pattern by following the online tutorial
+
+https://www.youtube.com/watch?v=oxeYeMHVLII&list=PLB6lc7nQ1n4jCBkrirvVGr5b8rC95VAQ5
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
