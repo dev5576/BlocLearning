@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/counter_bloc.dart';
+import 'package:test_app/counter_event.dart';
 
 void main() {
   runApp(MyApp());
@@ -28,60 +30,62 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  final _bloc = CounterBloc();
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  /*
 
-  void _decrementCounter() {
-    setState(() {
-      _counter--;
-    });
-  }
+   child:
+
+
+   */
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+        child: StreamBuilder(
+          stream: _bloc.counter,
+          initialData: 0,
+          builder: (BuildContext context, AsyncSnapshot<int> asyncSnapshot) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'You have pushed the button this many times:',
+                ),
+                Text(
+                  '${asyncSnapshot.data}',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+              ],
+            );
+          },
         ),
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           FloatingActionButton(
-            onPressed: _incrementCounter,
+            onPressed: () => _bloc.counterEventSink.add(IncrementEvent()),
             tooltip: 'Increment',
             child: Icon(Icons.add),
           ),
           SizedBox(width: 10),
           FloatingActionButton(
-            onPressed: _decrementCounter,
+            onPressed: () => _bloc.counterEventSink.add(DecrementEvent()),
             tooltip: 'Decrement',
             child: Icon(Icons.remove),
           ),
         ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  @overide
+  void dispose() {
+    super.dispose();
   }
 }
